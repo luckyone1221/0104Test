@@ -200,6 +200,7 @@ function cleanimg() {
 const path2 = `${publicPath}/img/@2x/`;
 const path1 = `${publicPath}/img/@1x/`;
 const w50 = metadata => Math.ceil(metadata.width * 0.5)
+
 function img() {
     return src(`${sourse}/img/*.{jpg,png}`)
         .pipe(sharpResponsive({
@@ -207,14 +208,14 @@ function img() {
                 // 2x
                 { pngOptions: { quality: 80, progressive: true }, rename: { dirname: path2}},
                 { jpegOptions: { quality: 80, progressive: true }, rename: { dirname: path2 } },
-                { webpOptions: { quality: 80, progressive: true }, format: "webp", rename: { dirname: `${path2}webp/` } },
-                { avifOptions: { quality: 80, progressive: true }, format: "avif", rename: { dirname: `${path2}avif/` } },
+                { format: "webp", rename: { dirname: `${path2}webp/` } },
+                { format: "avif", rename: { dirname: `${path2}avif/` } },
                 
                 // 1x
                 {width: w50, pngOptions: { quality: 80, progressive: true }, rename: { dirname: path1}},
                 {width: w50, jpegOptions: { quality: 80, progressive: true }, rename: { dirname: path1 } },
-                {width: w50, webpOptions: { quality: 80, progressive: true }, format: "webp", rename: { dirname: `${path1}webp/` } },
-                {width: w50, avifOptions: { quality: 80, progressive: true }, format: "avif", rename: { dirname: `${path1}avif/` } },
+                {width: w50, format: "webp", rename: { dirname: `${path1}webp/` } },
+                {width: w50, format: "avif", rename: { dirname: `${path1}avif/` } },
                 
             ]
         }))
@@ -231,24 +232,7 @@ function startwatch() {
     watch(sourse + '/img', { usePolling: true }, img);
 }
 
-export let imgAll = series(cleanimg, img)
-// export { common, styles, imgAll}
+export let imgAll = series(cleanimg, img) 
 export let libs = series(cleanlibs, copyLibs)
 export let sprite = series(svg, svgCopy)
-// export let libs = series(cleanlibs, copylibs)
-// export let build = series(cleandist, images, scripts, styles, buildcopy, buildhtml)
 export default series(common, libs, styles, imgAll, sprite, pugFiles, parallel(browsersync, startwatch))
-// $.gulp.task('img', $.gulp.series('cleanimg', 'img-responsive',  ));
-// $.gulp.task('libs', $.gulp.series('cleanlibs', 'copylibs'));
-
-// $.gulp.task('default', $.gulp.series('svg', 'svgCopy',
-
-//     $.gulp.parallel(
-//         // 'img',
-//         'pug',
-//         'libs',
-//         'scripts:common',
-//         'sass',
-//         'serv', 'watch'
-//     ),
-// ));
