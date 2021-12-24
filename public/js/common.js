@@ -1,10 +1,5 @@
 "use strict";
-const JSCCommon = {
-
-	btnToggleMenuMobile: [].slice.call(document.querySelectorAll(".toggle-menu-mobile--js")),
-	menuMobile: document.querySelector(".menu-mobile--js"),
-	menuMobileLink: [].slice.call(document.querySelectorAll(".menu-mobile--js ul li a")),
-
+const JSCCommon = { 
 	modalCall() {
 		const link = ".link-modal-js";
 
@@ -57,28 +52,30 @@ const JSCCommon = {
 	},
 	// /modalCall
 	toggleMenu() {
-		const toggle = this.btnToggleMenuMobile;
-		const menu = this.menuMobile;
 		document.addEventListener("click", function (event) {
+			const toggle = document.querySelectorAll(".toggle-menu-mobile--js");
+			const menu = document.querySelector(".menu-mobile--js");
 			const toggleEv = event.target.closest(".toggle-menu-mobile--js");
 			if (!toggleEv) return;
 			toggle.forEach(el => el.classList.toggle("on"));
 			menu.classList.toggle("active");
-			[document.body, document.querySelector('html')].forEach(el => el.classList.toggle("fixed")); 
+			[document.body, document.querySelector('html')].forEach(el => el.classList.toggle("fixed"));
 		}, { passive: true });
 	},
 	closeMenu() {
-		let menu = this.menuMobile;
+		const toggle = document.querySelectorAll(".toggle-menu-mobile--js");
+		const menu = document.querySelector(".menu-mobile--js");
 		if (!menu) return;
 		if (menu.classList.contains("active")) {
-			this.btnToggleMenuMobile.forEach(element => element.classList.remove("on"));
-			this.menuMobile.classList.remove("active");
-			[document.body, document.querySelector('html')].forEach(el => el.classList.remove("fixed")); 
+			toggle.forEach(element => element.classList.remove("on"));
+			menu.classList.remove("active");
+			[document.body, document.querySelector('html')].forEach(el => el.classList.remove("fixed"));
 		}
 
 	},
-	mobileMenu() {
-		if (!this.menuMobileLink) return;
+	mobileMenu() { 
+		const menu = document.querySelector(".menu-mobile--js");
+		if (!menu) return;
 		this.toggleMenu();
 		document.addEventListener('mouseup', (event) => {
 			let container = event.target.closest(".menu-mobile--js.active"); // (1)
@@ -91,7 +88,6 @@ const JSCCommon = {
 			if (window.matchMedia("(min-width: 992px)").matches) this.closeMenu();
 		}, { passive: true });
 	},
-	// /mobileMenu
 
 	// tabs  .
 	tabscostume(tab) {

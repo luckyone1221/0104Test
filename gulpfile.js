@@ -14,7 +14,6 @@ import cheerio  from 'gulp-cheerio'
 import replace  from 'gulp-replace'
 import svgSprite  from 'gulp-svg-sprite' 
 import npmDist  from 'gulp-npm-dist'
-import newer  from 'gulp-newer'
 import rename  from 'gulp-rename'  
 import gulpSass      from 'gulp-sass'
 import sassGlob  from 'gulp-sass-glob'
@@ -121,7 +120,10 @@ function styles() {
     ];
     return src(sourse + '/sass/main.scss')
         .pipe(sassGlob())
-        .pipe(sass({ outputStyle: 'compressed', indentedSyntax: false, errLogToConsole: true }))
+        .pipe(
+            sass.sync()
+                .on('error', sass.logError)
+        )
         // .pipe(postcss(processors, { syntax: syntax }))
         .pipe(postcss(processors, { syntax: pscss }))
         // .pipe(gcmq())
@@ -202,20 +204,20 @@ const path1 = `${publicPath}/img/@1x/`;
 const w50 = metadata => Math.ceil(metadata.width * 0.5)
 
 function img() {
-    return src(`${sourse}/img/*.{jpg,png}`)
+    return src(`${sourse}/img/*.{png,jpg,jpeg,webp,raw}`)
         .pipe(sharpResponsive({
             formats: [
                 // 2x
-                { pngOptions: { quality: 80, progressive: true }, rename: { dirname: path2}},
-                { jpegOptions: { quality: 80, progressive: true }, rename: { dirname: path2 } },
-                { format: "webp", rename: { dirname: `${path2}webp/` } },
-                { format: "avif", rename: { dirname: `${path2}avif/` } },
-                
+                { pngOptions: { quality: 90, progressive: true }, rename: { dirname: path2 } },
+                { jpegOptions: { quality: 90, progressive: true }, rename: { dirname: path2 } },
+                { format: "webp", webpOptions: { quality: 100, progressive: true }, rename: { dirname: `${path2}webp/` } },
+                { format: "avif", avifOptions: { quality: 100, progressive: true }, rename: { dirname: `${path2}avif/` } },
+
                 // 1x
-                {width: w50, pngOptions: { quality: 80, progressive: true }, rename: { dirname: path1}},
-                {width: w50, jpegOptions: { quality: 80, progressive: true }, rename: { dirname: path1 } },
-                {width: w50, format: "webp", rename: { dirname: `${path1}webp/` } },
-                {width: w50, format: "avif", rename: { dirname: `${path1}avif/` } },
+                { width: w50, pngOptions: { quality: 80, progressive: true }, rename: { dirname: path1 } },
+                { width: w50, jpegOptions: { quality: 80, progressive: true }, rename: { dirname: path1 } },
+                {width: w50, webpOptions: { quality: 100, progressive: true }, format: "webp", rename: { dirname: `${path1}webp/` } },
+                { width: w50, avifOptions: { quality: 100, progressive: true }, format: "avif", rename: { dirname: `${path1}avif/` } },
                 
             ]
         }))

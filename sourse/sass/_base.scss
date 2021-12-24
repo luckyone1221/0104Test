@@ -31,9 +31,9 @@ body {
 		margin-right: var(--spacing-end);
 	}
 	// min-width: 575px; 
-	-webkit-font-smoothing: antialiased;
-	position: relative;
-	overflow-x: hidden; 
+	// -webkit-font-smoothing: antialiased;
+	// position: relative;
+	// overflow-x: hidden; 
 	
 	&.loaded_hiding {
 		@include mt;
