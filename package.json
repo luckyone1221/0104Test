@@ -17,7 +17,7 @@
     "browserslist": "^4.19.1",
     "browsersync-ssi": "^0.2.4",
     "colors": "^1.4.0",
-    "cssnano": "^5.0.16",
+    "cssnano": "^5.0.17",
     "del": "^6.0.0",
     "gulp": "^4.0.2",
     "gulp-babel": "^8.0.0",
