@@ -1,8 +1,9 @@
-extends layout/main.pug
+extends ../layout/main.pug
 
 
 include ../blocks/sContent/_sContent.pug
 include ../blocks/sContact/_sContact.pug
+include ../blocks/sForm/_sForm.pug
 
 block variables
 	- let  mainPage= null 
@@ -12,17 +13,12 @@ block title
 	- let  title= 'Модальные окна'
 	title= title
 block pagecontent
-	+mob-mnu()
-	//- +header()
-	+top-nav()
 	//- +topLine()
+	script(load="part/head.html")
 	.section.container
 		.row
 			mixin btn(id, name)
 				.col-auto.mb-2
 					a.btn.btn-primary(href=`#` data-src=id data-fancybox="modal")= name
 			+btn("modal-call", "modal-call")
-	+footer
-
-
 

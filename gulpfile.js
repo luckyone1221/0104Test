@@ -31,28 +31,45 @@ import pscss  from 'postcss-scss'
 import syntax  from 'postcss-syntax'
 // )({ scss: 'postcss-scss'}),
 import plumber  from 'gulp-plumber'
-import sharpResponsive from "gulp-sharp-responsive";
+import sharpResponsive from "gulp-sharp-responsive"; 
+import data from "gulp-data"; 
+import  fs from 'fs';
 
+const dataFromFile = JSON.parse(fs.readFileSync(sourse + '/pug/content.json'))
 
 function browsersync() {
     browserSync.init({
         server: {
             baseDir: './' + publicPath,
-            middleware: bssi({ baseDir: './' + publicPath, ext: '.html' })
+            // middleware: bssi({ baseDir: './' + publicPath, ext: '.html' })
         },
-        ghostMode: { clicks: false },
-        notify: false,
-        online: true,
+        // ghostMode: { clicks: false },
+        // notify: false,
+        // online: true,
         tunnel: 'layouts', // Attempt to use the URL https://layouts.loca.lt
     })
 }
-function pugFiles() {
-    return src(sourse + '/pug/pages/*.pug')
-        .pipe(pug({ pretty: true }).on("error", notify.onError()))
-        .pipe(tabify(2, true))
-        .pipe(dest(publicPath))
-        .on('end', browserSync.reload);
+
+function cleanFolders() {
+    return del([publicPath + '/parts' ], { force: true })
 }
+
+function pugFiles() {
+    return  src([sourse + '/pug/pages/**/*.pug'])
+    .pipe(data(function(file) {
+        return JSON.parse(fs.readFileSync(sourse + '/pug/content.json'))
+    }))
+    .pipe(pug({ 
+        pretty: true,
+        cache: true, 
+        // locals: dataFromFile || {}
+    }).on("error", notify.onError())) 
+    .pipe(tabify(2, true))
+    // .pipe( urlBuilder() )
+    .pipe(dest(publicPath))
+    .on('end', browserSync.reload); 
+}
+
 function cleanlibs() {
     return del([publicPath + '/libs'], { force: true })
 }
@@ -119,7 +136,7 @@ function styles() {
         gcmq(),
     ];
     return src(sourse + '/sass/main.scss')
-        .pipe(sassGlob())
+        // .pipe(sassGlob())
         .pipe(
             sass.sync()
                 .on('error', sass.logError)
@@ -211,13 +228,13 @@ function img() {
                 { pngOptions: { quality: 90, progressive: true }, rename: { dirname: path2 } },
                 { jpegOptions: { quality: 90, progressive: true }, rename: { dirname: path2 } },
                 { format: "webp", webpOptions: { quality: 100, progressive: true }, rename: { dirname: `${path2}webp/` } },
-                { format: "avif", avifOptions: { quality: 100, progressive: true }, rename: { dirname: `${path2}avif/` } },
+                // { format: "avif", avifOptions: { quality: 100, progressive: true }, rename: { dirname: `${path2}avif/` } },
 
                 // 1x
-                { width: w50, pngOptions: { quality: 80, progressive: true }, rename: { dirname: path1 } },
-                { width: w50, jpegOptions: { quality: 80, progressive: true }, rename: { dirname: path1 } },
-                {width: w50, webpOptions: { quality: 100, progressive: true }, format: "webp", rename: { dirname: `${path1}webp/` } },
-                { width: w50, avifOptions: { quality: 100, progressive: true }, format: "avif", rename: { dirname: `${path1}avif/` } },
+                // { width: w50, pngOptions: { quality: 80, progressive: true }, rename: { dirname: path1 } },
+                // { width: w50, jpegOptions: { quality: 80, progressive: true }, rename: { dirname: path1 } },
+                // {width: w50, webpOptions: { quality: 100, progressive: true }, format: "webp", rename: { dirname: `${path1}webp/` } },
+                // { width: w50, avifOptions: { quality: 100, progressive: true }, format: "avif", rename: { dirname: `${path1}avif/` } },
                 
             ]
         }))
@@ -225,7 +242,7 @@ function img() {
 }
 function startwatch() {
     watch([sourse + '/sass/**/*.css', sourse + '/pug/blocks/**/*.scss', sourse + '/sass/**/*.scss', sourse + '/sass/**/*.sass'], { usePolling: true }, styles);
-    watch(sourse + '/pug/**/*.pug', { usePolling: true }, pugFiles);
+    watch([sourse + '/pug/**/*.pug', sourse + '/pug/content.json'], { usePolling: true }, pugFiles);
     watch(sourse + '/svg/*.svg', { usePolling: true }, svg);
     // watch([sourse + '/js/libs.js'], { usePolling: true }, scripts);
     watch(sourse + '/sass/*.svg', { usePolling: true }, svgCopy);
@@ -237,4 +254,7 @@ function startwatch() {
 export let imgAll = series(cleanimg, img) 
 export let libs = series(cleanlibs, copyLibs)
 export let sprite = series(svg, svgCopy)
-export default series(common, libs, styles, imgAll, sprite, pugFiles, parallel(browsersync, startwatch))
+
+
+
+export default series(common, libs, styles,cleanFolders, imgAll, sprite, pugFiles, parallel(browsersync, startwatch))
