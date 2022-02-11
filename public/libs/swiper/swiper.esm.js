@@ -1,13 +1,13 @@
 /**
- * Swiper 7.4.1
+ * Swiper 8.0.5
  * Most modern mobile touch slider and framework with hardware accelerated transitions
  * https://swiperjs.com
  *
- * Copyright 2014-2021 Vladimir Kharlampidi
+ * Copyright 2014-2022 Vladimir Kharlampidi
  *
  * Released under the MIT License
  *
- * Released on: December 24, 2021
+ * Released on: February 10, 2022
  */
 
 export { default as Swiper, default } from './core/core.js';

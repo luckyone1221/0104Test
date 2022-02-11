@@ -1,4 +1,8 @@
-function getChildren(originalSlots = {}, slidesRef, oldSlidesRef) {
+function getChildren(originalSlots, slidesRef, oldSlidesRef) {
+  if (originalSlots === void 0) {
+    originalSlots = {};
+  }
+
   const slides = [];
   const slots = {
     'container-start': [],

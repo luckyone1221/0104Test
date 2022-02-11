@@ -11,10 +11,13 @@ function isObject(o) {
         o.constructor &&
         Object.prototype.toString.call(o).slice(8, -1) === 'Object');
 }
+function isEnabled(val) {
+    return typeof val !== 'undefined' && typeof val !== 'boolean' && val.enabled === true;
+}
 function isShowEl(val, obj, el) {
     return ((coerceBooleanProperty(val) === true && obj && !obj.el) ||
         !(typeof obj !== 'boolean' &&
-            obj.el !== (el === null || el === void 0 ? void 0 : el.nativeElement) &&
+            obj.el !== el?.nativeElement &&
             (typeof obj.el === 'string' || typeof obj.el === 'object')));
 }
 function extend(target, src) {
@@ -82,6 +85,7 @@ const paramsList = [
     'breakpoints',
     '_spaceBetween',
     '_slidesPerView',
+    'maxBackfaceHiddenSlides',
     '_grid',
     '_slidesPerGroup',
     '_slidesPerGroupSkip',
@@ -171,13 +175,12 @@ const paramsList = [
     'on',
 ];
 
-// eslint-disable-next-line
 const allowedParams = paramsList.map((key) => key.replace(/_/, ''));
 function getParams(obj = {}) {
     const params = {
         on: {},
     };
-    const events = {};
+    // const events = {};
     const passedParams = {};
     extend(params, Swiper.defaults);
     extend(params, Swiper.extendedDefaults);
@@ -254,9 +257,9 @@ class SwiperSlideDirective {
         return classNames.some((className) => this._classNames.indexOf(className) >= 0);
     }
 }
-SwiperSlideDirective.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "12.2.2", ngImport: i0, type: SwiperSlideDirective, deps: [{ token: i0.TemplateRef }], target: i0.ɵɵFactoryTarget.Directive });
-SwiperSlideDirective.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "12.0.0", version: "12.2.2", type: SwiperSlideDirective, selector: "ng-template[swiperSlide]", inputs: { virtualIndex: "virtualIndex", class: "class", autoplayDelay: ["data-swiper-autoplay", "autoplayDelay"], zoom: "zoom" }, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "12.2.2", ngImport: i0, type: SwiperSlideDirective, decorators: [{
+SwiperSlideDirective.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: SwiperSlideDirective, deps: [{ token: i0.TemplateRef }], target: i0.ɵɵFactoryTarget.Directive });
+SwiperSlideDirective.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "12.0.0", version: "13.0.2", type: SwiperSlideDirective, selector: "ng-template[swiperSlide]", inputs: { virtualIndex: "virtualIndex", class: "class", autoplayDelay: ["data-swiper-autoplay", "autoplayDelay"], zoom: "zoom" }, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: SwiperSlideDirective, decorators: [{
             type: Directive,
             args: [{
                     selector: 'ng-template[swiperSlide]',
@@ -283,163 +286,86 @@ class SwiperComponent {
         this.showNavigation = true;
         this.showPagination = true;
         this.showScrollbar = true;
-        // prettier-ignore
         this.s__beforeBreakpoint = new EventEmitter();
-        // prettier-ignore
         this.s__containerClasses = new EventEmitter();
-        // prettier-ignore
         this.s__slideClass = new EventEmitter();
-        // prettier-ignore
         this.s__swiper = new EventEmitter();
-        // prettier-ignore
         this.s_activeIndexChange = new EventEmitter();
-        // prettier-ignore
         this.s_afterInit = new EventEmitter();
-        // prettier-ignore
         this.s_autoplay = new EventEmitter();
-        // prettier-ignore
         this.s_autoplayStart = new EventEmitter();
-        // prettier-ignore
         this.s_autoplayStop = new EventEmitter();
-        // prettier-ignore
+        this.s_autoplayPause = new EventEmitter();
+        this.s_autoplayResume = new EventEmitter();
         this.s_beforeDestroy = new EventEmitter();
-        // prettier-ignore
         this.s_beforeInit = new EventEmitter();
-        // prettier-ignore
         this.s_beforeLoopFix = new EventEmitter();
-        // prettier-ignore
         this.s_beforeResize = new EventEmitter();
-        // prettier-ignore
         this.s_beforeSlideChangeStart = new EventEmitter();
-        // prettier-ignore
         this.s_beforeTransitionStart = new EventEmitter();
-        // prettier-ignore
         this.s_breakpoint = new EventEmitter();
-        // prettier-ignore
         this.s_changeDirection = new EventEmitter();
-        // prettier-ignore
         this.s_click = new EventEmitter();
-        // prettier-ignore
         this.s_doubleTap = new EventEmitter();
-        // prettier-ignore
         this.s_doubleClick = new EventEmitter();
-        // prettier-ignore
         this.s_destroy = new EventEmitter();
-        // prettier-ignore
         this.s_fromEdge = new EventEmitter();
-        // prettier-ignore
         this.s_hashChange = new EventEmitter();
-        // prettier-ignore
         this.s_hashSet = new EventEmitter();
-        // prettier-ignore
         this.s_imagesReady = new EventEmitter();
-        // prettier-ignore
         this.s_init = new EventEmitter();
-        // prettier-ignore
         this.s_keyPress = new EventEmitter();
-        // prettier-ignore
         this.s_lazyImageLoad = new EventEmitter();
-        // prettier-ignore
         this.s_lazyImageReady = new EventEmitter();
-        // prettier-ignore
         this.s_loopFix = new EventEmitter();
-        // prettier-ignore
         this.s_momentumBounce = new EventEmitter();
-        // prettier-ignore
         this.s_navigationHide = new EventEmitter();
-        // prettier-ignore
         this.s_navigationShow = new EventEmitter();
-        // prettier-ignore
         this.s_observerUpdate = new EventEmitter();
-        // prettier-ignore
         this.s_orientationchange = new EventEmitter();
-        // prettier-ignore
         this.s_paginationHide = new EventEmitter();
-        // prettier-ignore
         this.s_paginationRender = new EventEmitter();
-        // prettier-ignore
         this.s_paginationShow = new EventEmitter();
-        // prettier-ignore
         this.s_paginationUpdate = new EventEmitter();
-        // prettier-ignore
         this.s_progress = new EventEmitter();
-        // prettier-ignore
         this.s_reachBeginning = new EventEmitter();
-        // prettier-ignore
         this.s_reachEnd = new EventEmitter();
-        // prettier-ignore
         this.s_realIndexChange = new EventEmitter();
-        // prettier-ignore
         this.s_resize = new EventEmitter();
-        // prettier-ignore
         this.s_scroll = new EventEmitter();
-        // prettier-ignore
         this.s_scrollbarDragEnd = new EventEmitter();
-        // prettier-ignore
         this.s_scrollbarDragMove = new EventEmitter();
-        // prettier-ignore
         this.s_scrollbarDragStart = new EventEmitter();
-        // prettier-ignore
         this.s_setTransition = new EventEmitter();
-        // prettier-ignore
         this.s_setTranslate = new EventEmitter();
-        // prettier-ignore
         this.s_slideChange = new EventEmitter();
-        // prettier-ignore
         this.s_slideChangeTransitionEnd = new EventEmitter();
-        // prettier-ignore
         this.s_slideChangeTransitionStart = new EventEmitter();
-        // prettier-ignore
         this.s_slideNextTransitionEnd = new EventEmitter();
-        // prettier-ignore
         this.s_slideNextTransitionStart = new EventEmitter();
-        // prettier-ignore
         this.s_slidePrevTransitionEnd = new EventEmitter();
-        // prettier-ignore
         this.s_slidePrevTransitionStart = new EventEmitter();
-        // prettier-ignore
         this.s_slideResetTransitionStart = new EventEmitter();
-        // prettier-ignore
         this.s_slideResetTransitionEnd = new EventEmitter();
-        // prettier-ignore
         this.s_sliderMove = new EventEmitter();
-        // prettier-ignore
         this.s_sliderFirstMove = new EventEmitter();
-        // prettier-ignore
         this.s_slidesLengthChange = new EventEmitter();
-        // prettier-ignore
         this.s_slidesGridLengthChange = new EventEmitter();
-        // prettier-ignore
         this.s_snapGridLengthChange = new EventEmitter();
-        // prettier-ignore
         this.s_snapIndexChange = new EventEmitter();
-        // prettier-ignore
         this.s_tap = new EventEmitter();
-        // prettier-ignore
         this.s_toEdge = new EventEmitter();
-        // prettier-ignore
         this.s_touchEnd = new EventEmitter();
-        // prettier-ignore
         this.s_touchMove = new EventEmitter();
-        // prettier-ignore
         this.s_touchMoveOpposite = new EventEmitter();
-        // prettier-ignore
         this.s_touchStart = new EventEmitter();
-        // prettier-ignore
         this.s_transitionEnd = new EventEmitter();
-        // prettier-ignore
         this.s_transitionStart = new EventEmitter();
-        // prettier-ignore
         this.s_update = new EventEmitter();
-        // prettier-ignore
         this.s_zoomChange = new EventEmitter();
-        // prettier-ignore
-        this.s_lock = new EventEmitter();
-        // prettier-ignore
-        this.s_unlock = new EventEmitter();
-        // prettier-ignore
         this.s_swiper = new EventEmitter();
-        this.indexChange = new EventEmitter();
+        this.s_lock = new EventEmitter();
+        this.s_unlock = new EventEmitter();
         this._activeSlides = new Subject();
         this.containerClasses = 'swiper';
         this.slidesChanges = (val) => {
@@ -491,7 +417,7 @@ class SwiperComponent {
                 this.swiperRef.updateSlides();
                 this.swiperRef.updateProgress();
                 this.swiperRef.updateSlidesClasses();
-                if (this.swiperRef.lazy && this.swiperRef.params.lazy['enabled']) {
+                if (isEnabled(this.swiperRef.params.lazy)) {
                     this.swiperRef.lazy.load();
                 }
                 this.swiperRef.virtual.update(true);
@@ -500,12 +426,11 @@ class SwiperComponent {
         };
     }
     set navigation(val) {
-        var _a, _b, _c;
         const currentNext = typeof this._navigation !== 'boolean' && this._navigation !== ''
-            ? (_a = this._navigation) === null || _a === void 0 ? void 0 : _a.nextEl
+            ? this._navigation?.nextEl
             : null;
         const currentPrev = typeof this._navigation !== 'boolean' && this._navigation !== ''
-            ? (_b = this._navigation) === null || _b === void 0 ? void 0 : _b.prevEl
+            ? this._navigation?.prevEl
             : null;
         this._navigation = setProperty(val, {
             nextEl: currentNext || null,
@@ -514,7 +439,7 @@ class SwiperComponent {
         this.showNavigation = !(coerceBooleanProperty(val) !== true ||
             (this._navigation &&
                 typeof this._navigation !== 'boolean' &&
-                this._navigation.prevEl !== ((_c = this._prevElRef) === null || _c === void 0 ? void 0 : _c.nativeElement) &&
+                this._navigation.prevEl !== this._prevElRef?.nativeElement &&
                 (this._navigation.prevEl !== null || this._navigation.nextEl !== null) &&
                 (typeof this._navigation.nextEl === 'string' ||
                     typeof this._navigation.prevEl === 'string' ||
@@ -525,9 +450,8 @@ class SwiperComponent {
         return this._navigation;
     }
     set pagination(val) {
-        var _a;
         const current = typeof this._pagination !== 'boolean' && this._pagination !== ''
-            ? (_a = this._pagination) === null || _a === void 0 ? void 0 : _a.el
+            ? this._pagination?.el
             : null;
         this._pagination = setProperty(val, {
             el: current || null,
@@ -538,8 +462,7 @@ class SwiperComponent {
         return this._pagination;
     }
     set scrollbar(val) {
-        var _a;
-        const current = typeof this._scrollbar !== 'boolean' && this._scrollbar !== '' ? (_a = this._scrollbar) === null || _a === void 0 ? void 0 : _a.el : null;
+        const current = typeof this._scrollbar !== 'boolean' && this._scrollbar !== '' ? this._scrollbar?.el : null;
         this._scrollbar = setProperty(val, {
             el: current || null,
         });
@@ -553,10 +476,6 @@ class SwiperComponent {
     }
     get virtual() {
         return this._virtual;
-    }
-    set index(index) {
-        console.warn('`[(index)]` prop is deprecated and will be removed in upcoming versions');
-        this.setIndex(index);
     }
     set config(val) {
         this.updateSwiper(val);
@@ -633,7 +552,7 @@ class SwiperComponent {
             swiperParams.onAny = (eventName, ...args) => {
                 const emitter = this[('s_' + eventName)];
                 if (emitter) {
-                    emitter.emit(...args);
+                    emitter.emit([...args]);
                 }
             };
             const _slideClasses = (_, updated) => {
@@ -670,9 +589,7 @@ class SwiperComponent {
             if (swiperParams.loop) {
                 swiperRef.loopedSlides = this.loopedSlides;
             }
-            const isVirtualEnabled = typeof swiperRef.params.virtual !== 'undefined' &&
-                typeof swiperRef.params.virtual !== 'boolean' &&
-                swiperRef.params.virtual.enabled;
+            const isVirtualEnabled = isEnabled(swiperRef.params.virtual);
             if (swiperRef.virtual && isVirtualEnabled) {
                 swiperRef.virtual.slides = this.slides;
                 const extendWith = {
@@ -686,16 +603,11 @@ class SwiperComponent {
             }
             if (isPlatformBrowser(this._platformId)) {
                 this.swiperRef = swiperRef.init(this.elementRef.nativeElement);
-                const isEnabled = typeof this.swiperRef.params.virtual !== 'undefined' &&
-                    typeof this.swiperRef.params.virtual !== 'boolean' &&
-                    this.swiperRef.params.virtual.enabled;
-                if (this.swiperRef.virtual && isEnabled) {
+                const isVirtualEnabled = isEnabled(this.swiperRef.params.virtual);
+                if (this.swiperRef.virtual && isVirtualEnabled) {
                     this.swiperRef.virtual.update(true);
                 }
                 this._changeDetectorRef.detectChanges();
-                swiperRef.on('slideChange', () => {
-                    this.indexChange.emit(this.swiperRef.realIndex);
-                });
             }
         });
     }
@@ -773,7 +685,6 @@ class SwiperComponent {
     }
     updateSwiper(changedParams) {
         this._ngZone.runOutsideAngular(() => {
-            var _a, _b;
             if (changedParams.config) {
                 return;
             }
@@ -784,7 +695,7 @@ class SwiperComponent {
                 if (ignoreNgOnChanges.indexOf(key) >= 0) {
                     continue;
                 }
-                const newValue = (_b = (_a = changedParams[key]) === null || _a === void 0 ? void 0 : _a.currentValue) !== null && _b !== void 0 ? _b : changedParams[key];
+                const newValue = changedParams[key]?.currentValue ?? changedParams[key];
                 this.updateParameter(key, newValue);
             }
             if (changedParams.allowSlideNext) {
@@ -811,7 +722,7 @@ class SwiperComponent {
     }
     calcLoopedSlides() {
         if (!this.loop) {
-            return;
+            return false;
         }
         let slidesPerViewParams = this.slidesPerView;
         if (this.breakpoints) {
@@ -828,7 +739,7 @@ class SwiperComponent {
         let loopedSlides = this.loopedSlides || slidesPerViewParams;
         if (!loopedSlides) {
             // ?
-            return;
+            return false;
         }
         if (this.loopAdditionalSlides) {
             loopedSlides += this.loopAdditionalSlides;
@@ -837,7 +748,7 @@ class SwiperComponent {
             loopedSlides = this.slides.length;
         }
         this.loopedSlides = loopedSlides;
-        return loopedSlides;
+        return true;
     }
     updateParameter(key, value) {
         if (!(this.swiperRef && !this.swiperRef.destroyed)) {
@@ -861,50 +772,23 @@ class SwiperComponent {
             this.swiperRef.params[_key] = value;
         }
     }
-    /**
-     * @deprecated will be removed in upcoming versions
-     */
-    setIndex(index, speed, silent) {
-        if (!this.isSwiperActive) {
-            this.initialSlide = index;
-            return;
-        }
-        if (index === this.swiperRef.activeIndex) {
-            return;
-        }
-        this._ngZone.runOutsideAngular(() => {
-            if (this.loop) {
-                this.swiperRef.slideToLoop(index, speed, !silent);
-            }
-            else {
-                this.swiperRef.slideTo(index, speed, !silent);
-            }
-        });
-    }
     ngOnDestroy() {
         this._ngZone.runOutsideAngular(() => {
-            var _a;
-            (_a = this.swiperRef) === null || _a === void 0 ? void 0 : _a.destroy(true, false);
+            this.swiperRef?.destroy(true, false);
         });
     }
 }
-SwiperComponent.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "12.2.2", ngImport: i0, type: SwiperComponent, deps: [{ token: i0.NgZone }, { token: i0.ElementRef }, { token: i0.ChangeDetectorRef }, { token: PLATFORM_ID }], target: i0.ɵɵFactoryTarget.Component });
-SwiperComponent.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "12.0.0", version: "12.2.2", type: SwiperComponent, selector: "swiper, [swiper]", inputs: { enabled: "enabled", on: "on", direction: "direction", touchEventsTarget: "touchEventsTarget", initialSlide: "initialSlide", speed: "speed", cssMode: "cssMode", updateOnWindowResize: "updateOnWindowResize", resizeObserver: "resizeObserver", nested: "nested", focusableElements: "focusableElements", width: "width", height: "height", preventInteractionOnTransition: "preventInteractionOnTransition", userAgent: "userAgent", url: "url", edgeSwipeDetection: "edgeSwipeDetection", edgeSwipeThreshold: "edgeSwipeThreshold", freeMode: "freeMode", autoHeight: "autoHeight", setWrapperSize: "setWrapperSize", virtualTranslate: "virtualTranslate", effect: "effect", breakpoints: "breakpoints", spaceBetween: "spaceBetween", slidesPerView: "slidesPerView", grid: "grid", slidesPerGroup: "slidesPerGroup", slidesPerGroupSkip: "slidesPerGroupSkip", centeredSlides: "centeredSlides", centeredSlidesBounds: "centeredSlidesBounds", slidesOffsetBefore: "slidesOffsetBefore", slidesOffsetAfter: "slidesOffsetAfter", normalizeSlideIndex: "normalizeSlideIndex", centerInsufficientSlides: "centerInsufficientSlides", watchOverflow: "watchOverflow", roundLengths: "roundLengths", touchRatio: "touchRatio", touchAngle: "touchAngle", simulateTouch: "simulateTouch", shortSwipes: "shortSwipes", longSwipes: "longSwipes", longSwipesRatio: "longSwipesRatio", longSwipesMs: "longSwipesMs", followFinger: "followFinger", allowTouchMove: "allowTouchMove", threshold: "threshold", touchMoveStopPropagation: "touchMoveStopPropagation", touchStartPreventDefault: "touchStartPreventDefault", touchStartForcePreventDefault: "touchStartForcePreventDefault", touchReleaseOnEdges: "touchReleaseOnEdges", uniqueNavElements: "uniqueNavElements", resistance: "resistance", resistanceRatio: "resistanceRatio", watchSlidesProgress: "watchSlidesProgress", grabCursor: "grabCursor", preventClicks: "preventClicks", preventClicksPropagation: "preventClicksPropagation", slideToClickedSlide: "slideToClickedSlide", preloadImages: "preloadImages", updateOnImagesReady: "updateOnImagesReady", loop: "loop", loopAdditionalSlides: "loopAdditionalSlides", loopedSlides: "loopedSlides", loopFillGroupWithBlank: "loopFillGroupWithBlank", loopPreventsSlide: "loopPreventsSlide", rewind: "rewind", allowSlidePrev: "allowSlidePrev", allowSlideNext: "allowSlideNext", swipeHandler: "swipeHandler", noSwiping: "noSwiping", noSwipingClass: "noSwipingClass", noSwipingSelector: "noSwipingSelector", passiveListeners: "passiveListeners", containerModifierClass: "containerModifierClass", slideClass: "slideClass", slideBlankClass: "slideBlankClass", slideActiveClass: "slideActiveClass", slideDuplicateActiveClass: "slideDuplicateActiveClass", slideVisibleClass: "slideVisibleClass", slideDuplicateClass: "slideDuplicateClass", slideNextClass: "slideNextClass", slideDuplicateNextClass: "slideDuplicateNextClass", slidePrevClass: "slidePrevClass", slideDuplicatePrevClass: "slideDuplicatePrevClass", wrapperClass: "wrapperClass", runCallbacksOnInit: "runCallbacksOnInit", observeParents: "observeParents", observeSlideChildren: "observeSlideChildren", a11y: "a11y", autoplay: "autoplay", controller: "controller", coverflowEffect: "coverflowEffect", cubeEffect: "cubeEffect", fadeEffect: "fadeEffect", flipEffect: "flipEffect", creativeEffect: "creativeEffect", cardsEffect: "cardsEffect", hashNavigation: "hashNavigation", history: "history", keyboard: "keyboard", lazy: "lazy", mousewheel: "mousewheel", parallax: "parallax", thumbs: "thumbs", zoom: "zoom", class: "class", id: "id", navigation: "navigation", pagination: "pagination", scrollbar: "scrollbar", virtual: "virtual", index: "index", config: "config" }, outputs: { s__beforeBreakpoint: "_beforeBreakpoint", s__containerClasses: "_containerClasses", s__slideClass: "_slideClass", s__swiper: "_swiper", s_activeIndexChange: "activeIndexChange", s_afterInit: "afterInit", s_autoplay: "autoplay", s_autoplayStart: "autoplayStart", s_autoplayStop: "autoplayStop", s_beforeDestroy: "beforeDestroy", s_beforeInit: "beforeInit", s_beforeLoopFix: "beforeLoopFix", s_beforeResize: "beforeResize", s_beforeSlideChangeStart: "beforeSlideChangeStart", s_beforeTransitionStart: "beforeTransitionStart", s_breakpoint: "breakpoint", s_changeDirection: "changeDirection", s_click: "click", s_doubleTap: "doubleTap", s_doubleClick: "doubleClick", s_destroy: "destroy", s_fromEdge: "fromEdge", s_hashChange: "hashChange", s_hashSet: "hashSet", s_imagesReady: "imagesReady", s_init: "init", s_keyPress: "keyPress", s_lazyImageLoad: "lazyImageLoad", s_lazyImageReady: "lazyImageReady", s_loopFix: "loopFix", s_momentumBounce: "momentumBounce", s_navigationHide: "navigationHide", s_navigationShow: "navigationShow", s_observerUpdate: "observerUpdate", s_orientationchange: "orientationchange", s_paginationHide: "paginationHide", s_paginationRender: "paginationRender", s_paginationShow: "paginationShow", s_paginationUpdate: "paginationUpdate", s_progress: "progress", s_reachBeginning: "reachBeginning", s_reachEnd: "reachEnd", s_realIndexChange: "realIndexChange", s_resize: "resize", s_scroll: "scroll", s_scrollbarDragEnd: "scrollbarDragEnd", s_scrollbarDragMove: "scrollbarDragMove", s_scrollbarDragStart: "scrollbarDragStart", s_setTransition: "setTransition", s_setTranslate: "setTranslate", s_slideChange: "slideChange", s_slideChangeTransitionEnd: "slideChangeTransitionEnd", s_slideChangeTransitionStart: "slideChangeTransitionStart", s_slideNextTransitionEnd: "slideNextTransitionEnd", s_slideNextTransitionStart: "slideNextTransitionStart", s_slidePrevTransitionEnd: "slidePrevTransitionEnd", s_slidePrevTransitionStart: "slidePrevTransitionStart", s_slideResetTransitionStart: "slideResetTransitionStart", s_slideResetTransitionEnd: "slideResetTransitionEnd", s_sliderMove: "sliderMove", s_sliderFirstMove: "sliderFirstMove", s_slidesLengthChange: "slidesLengthChange", s_slidesGridLengthChange: "slidesGridLengthChange", s_snapGridLengthChange: "snapGridLengthChange", s_snapIndexChange: "snapIndexChange", s_tap: "tap", s_toEdge: "toEdge", s_touchEnd: "touchEnd", s_touchMove: "touchMove", s_touchMoveOpposite: "touchMoveOpposite", s_touchStart: "touchStart", s_transitionEnd: "transitionEnd", s_transitionStart: "transitionStart", s_update: "update", s_zoomChange: "zoomChange", s_lock: "lock", s_unlock: "unlock", s_swiper: "swiper", indexChange: "indexChange" }, host: { properties: { "class": "this.containerClasses" } }, queries: [{ propertyName: "slidesEl", predicate: SwiperSlideDirective }], viewQueries: [{ propertyName: "prevElRef", first: true, predicate: ["prevElRef"], descendants: true }, { propertyName: "nextElRef", first: true, predicate: ["nextElRef"], descendants: true }, { propertyName: "scrollbarElRef", first: true, predicate: ["scrollbarElRef"], descendants: true }, { propertyName: "paginationElRef", first: true, predicate: ["paginationElRef"], descendants: true }], usesOnChanges: true, ngImport: i0, template: "<ng-content select=\"[slot=container-start]\"></ng-content>\n<ng-container *ngIf=\"navigation && showNavigation\">\n  <div class=\"swiper-button-prev\" #prevElRef></div>\n  <div class=\"swiper-button-next\" #nextElRef></div>\n</ng-container>\n<div *ngIf=\"scrollbar && showScrollbar\" class=\"swiper-scrollbar\" #scrollbarElRef></div>\n<div *ngIf=\"pagination && showPagination\" class=\"swiper-pagination\" #paginationElRef></div>\n<div [ngClass]=\"wrapperClass\" [attr.id]=\"id\">\n  <ng-content select=\"[slot=wrapper-start]\"></ng-content>\n  <ng-template\n    *ngTemplateOutlet=\"\n      slidesTemplate;\n      context: {\n        loopSlides: prependSlides,\n        key: 'prepend'\n      }\n    \"\n  ></ng-template>\n  <ng-template\n    *ngTemplateOutlet=\"\n      slidesTemplate;\n      context: {\n        loopSlides: activeSlides,\n        key: ''\n      }\n    \"\n  ></ng-template>\n  <ng-template\n    *ngTemplateOutlet=\"\n      slidesTemplate;\n      context: {\n        loopSlides: appendSlides,\n        key: 'append'\n      }\n    \"\n  ></ng-template>\n  <ng-content select=\"[slot=wrapper-end]\"></ng-content>\n</div>\n<ng-content select=\"[slot=container-end]\"></ng-content>\n\n<ng-template #slidesTemplate let-loopSlides=\"loopSlides\" let-slideKey=\"key\">\n  <div\n    *ngFor=\"let slide of loopSlides | async\"\n    [ngClass]=\"\n      (slide.class ? slide.class + ' ' : '') +\n      slideClass +\n      (slideKey !== '' ? ' ' + slideDuplicateClass : '')\n    \"\n    [attr.data-swiper-slide-index]=\"slide.virtualIndex ? slide.virtualIndex : slide.slideIndex\"\n    [attr.data-swiper-autoplay]=\"slide.autoplayDelay\"\n    [style]=\"style\"\n    [ngSwitch]=\"slide.zoom\"\n  >\n    <div *ngSwitchCase=\"true\" [ngClass]=\"zoomContainerClass\">\n      <ng-template\n        [ngTemplateOutlet]=\"slide.template\"\n        [ngTemplateOutletContext]=\"{\n          $implicit: slide.slideData\n        }\"\n      ></ng-template>\n    </div>\n    <ng-container *ngSwitchDefault>\n      <ng-template\n        [ngTemplateOutlet]=\"slide.template\"\n        [ngTemplateOutletContext]=\"{\n          $implicit: slide.slideData\n        }\"\n      ></ng-template>\n    </ng-container>\n  </div>\n</ng-template>\n", styles: ["\n      swiper {\n        display: block;\n      }\n    "], directives: [{ type: i1.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { type: i1.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet"] }, { type: i1.NgForOf, selector: "[ngFor][ngForOf]", inputs: ["ngForOf", "ngForTrackBy", "ngForTemplate"] }, { type: i1.NgSwitch, selector: "[ngSwitch]", inputs: ["ngSwitch"] }, { type: i1.NgSwitchCase, selector: "[ngSwitchCase]", inputs: ["ngSwitchCase"] }, { type: i1.NgSwitchDefault, selector: "[ngSwitchDefault]" }], pipes: { "async": i1.AsyncPipe }, changeDetection: i0.ChangeDetectionStrategy.OnPush, encapsulation: i0.ViewEncapsulation.None });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "12.2.2", ngImport: i0, type: SwiperComponent, decorators: [{
+SwiperComponent.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: SwiperComponent, deps: [{ token: i0.NgZone }, { token: i0.ElementRef }, { token: i0.ChangeDetectorRef }, { token: PLATFORM_ID }], target: i0.ɵɵFactoryTarget.Component });
+SwiperComponent.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "12.0.0", version: "13.0.2", type: SwiperComponent, selector: "swiper, [swiper]", inputs: { enabled: "enabled", on: "on", direction: "direction", touchEventsTarget: "touchEventsTarget", initialSlide: "initialSlide", speed: "speed", cssMode: "cssMode", updateOnWindowResize: "updateOnWindowResize", resizeObserver: "resizeObserver", nested: "nested", focusableElements: "focusableElements", width: "width", height: "height", preventInteractionOnTransition: "preventInteractionOnTransition", userAgent: "userAgent", url: "url", edgeSwipeDetection: "edgeSwipeDetection", edgeSwipeThreshold: "edgeSwipeThreshold", freeMode: "freeMode", autoHeight: "autoHeight", setWrapperSize: "setWrapperSize", virtualTranslate: "virtualTranslate", effect: "effect", breakpoints: "breakpoints", spaceBetween: "spaceBetween", slidesPerView: "slidesPerView", maxBackfaceHiddenSlides: "maxBackfaceHiddenSlides", grid: "grid", slidesPerGroup: "slidesPerGroup", slidesPerGroupSkip: "slidesPerGroupSkip", centeredSlides: "centeredSlides", centeredSlidesBounds: "centeredSlidesBounds", slidesOffsetBefore: "slidesOffsetBefore", slidesOffsetAfter: "slidesOffsetAfter", normalizeSlideIndex: "normalizeSlideIndex", centerInsufficientSlides: "centerInsufficientSlides", watchOverflow: "watchOverflow", roundLengths: "roundLengths", touchRatio: "touchRatio", touchAngle: "touchAngle", simulateTouch: "simulateTouch", shortSwipes: "shortSwipes", longSwipes: "longSwipes", longSwipesRatio: "longSwipesRatio", longSwipesMs: "longSwipesMs", followFinger: "followFinger", allowTouchMove: "allowTouchMove", threshold: "threshold", touchMoveStopPropagation: "touchMoveStopPropagation", touchStartPreventDefault: "touchStartPreventDefault", touchStartForcePreventDefault: "touchStartForcePreventDefault", touchReleaseOnEdges: "touchReleaseOnEdges", uniqueNavElements: "uniqueNavElements", resistance: "resistance", resistanceRatio: "resistanceRatio", watchSlidesProgress: "watchSlidesProgress", grabCursor: "grabCursor", preventClicks: "preventClicks", preventClicksPropagation: "preventClicksPropagation", slideToClickedSlide: "slideToClickedSlide", preloadImages: "preloadImages", updateOnImagesReady: "updateOnImagesReady", loop: "loop", loopAdditionalSlides: "loopAdditionalSlides", loopedSlides: "loopedSlides", loopFillGroupWithBlank: "loopFillGroupWithBlank", loopPreventsSlide: "loopPreventsSlide", rewind: "rewind", allowSlidePrev: "allowSlidePrev", allowSlideNext: "allowSlideNext", swipeHandler: "swipeHandler", noSwiping: "noSwiping", noSwipingClass: "noSwipingClass", noSwipingSelector: "noSwipingSelector", passiveListeners: "passiveListeners", containerModifierClass: "containerModifierClass", slideClass: "slideClass", slideBlankClass: "slideBlankClass", slideActiveClass: "slideActiveClass", slideDuplicateActiveClass: "slideDuplicateActiveClass", slideVisibleClass: "slideVisibleClass", slideDuplicateClass: "slideDuplicateClass", slideNextClass: "slideNextClass", slideDuplicateNextClass: "slideDuplicateNextClass", slidePrevClass: "slidePrevClass", slideDuplicatePrevClass: "slideDuplicatePrevClass", wrapperClass: "wrapperClass", runCallbacksOnInit: "runCallbacksOnInit", observeParents: "observeParents", observeSlideChildren: "observeSlideChildren", a11y: "a11y", autoplay: "autoplay", controller: "controller", coverflowEffect: "coverflowEffect", cubeEffect: "cubeEffect", fadeEffect: "fadeEffect", flipEffect: "flipEffect", creativeEffect: "creativeEffect", cardsEffect: "cardsEffect", hashNavigation: "hashNavigation", history: "history", keyboard: "keyboard", lazy: "lazy", mousewheel: "mousewheel", parallax: "parallax", thumbs: "thumbs", zoom: "zoom", class: "class", id: "id", navigation: "navigation", pagination: "pagination", scrollbar: "scrollbar", virtual: "virtual", config: "config" }, outputs: { s__beforeBreakpoint: "_beforeBreakpoint", s__containerClasses: "_containerClasses", s__slideClass: "_slideClass", s__swiper: "_swiper", s_activeIndexChange: "activeIndexChange", s_afterInit: "afterInit", s_autoplay: "autoplay", s_autoplayStart: "autoplayStart", s_autoplayStop: "autoplayStop", s_autoplayPause: "autoplayPause", s_autoplayResume: "autoplayResume", s_beforeDestroy: "beforeDestroy", s_beforeInit: "beforeInit", s_beforeLoopFix: "beforeLoopFix", s_beforeResize: "beforeResize", s_beforeSlideChangeStart: "beforeSlideChangeStart", s_beforeTransitionStart: "beforeTransitionStart", s_breakpoint: "breakpoint", s_changeDirection: "changeDirection", s_click: "click", s_doubleTap: "doubleTap", s_doubleClick: "doubleClick", s_destroy: "destroy", s_fromEdge: "fromEdge", s_hashChange: "hashChange", s_hashSet: "hashSet", s_imagesReady: "imagesReady", s_init: "init", s_keyPress: "keyPress", s_lazyImageLoad: "lazyImageLoad", s_lazyImageReady: "lazyImageReady", s_loopFix: "loopFix", s_momentumBounce: "momentumBounce", s_navigationHide: "navigationHide", s_navigationShow: "navigationShow", s_observerUpdate: "observerUpdate", s_orientationchange: "orientationchange", s_paginationHide: "paginationHide", s_paginationRender: "paginationRender", s_paginationShow: "paginationShow", s_paginationUpdate: "paginationUpdate", s_progress: "progress", s_reachBeginning: "reachBeginning", s_reachEnd: "reachEnd", s_realIndexChange: "realIndexChange", s_resize: "resize", s_scroll: "scroll", s_scrollbarDragEnd: "scrollbarDragEnd", s_scrollbarDragMove: "scrollbarDragMove", s_scrollbarDragStart: "scrollbarDragStart", s_setTransition: "setTransition", s_setTranslate: "setTranslate", s_slideChange: "slideChange", s_slideChangeTransitionEnd: "slideChangeTransitionEnd", s_slideChangeTransitionStart: "slideChangeTransitionStart", s_slideNextTransitionEnd: "slideNextTransitionEnd", s_slideNextTransitionStart: "slideNextTransitionStart", s_slidePrevTransitionEnd: "slidePrevTransitionEnd", s_slidePrevTransitionStart: "slidePrevTransitionStart", s_slideResetTransitionStart: "slideResetTransitionStart", s_slideResetTransitionEnd: "slideResetTransitionEnd", s_sliderMove: "sliderMove", s_sliderFirstMove: "sliderFirstMove", s_slidesLengthChange: "slidesLengthChange", s_slidesGridLengthChange: "slidesGridLengthChange", s_snapGridLengthChange: "snapGridLengthChange", s_snapIndexChange: "snapIndexChange", s_tap: "tap", s_toEdge: "toEdge", s_touchEnd: "touchEnd", s_touchMove: "touchMove", s_touchMoveOpposite: "touchMoveOpposite", s_touchStart: "touchStart", s_transitionEnd: "transitionEnd", s_transitionStart: "transitionStart", s_update: "update", s_zoomChange: "zoomChange", s_swiper: "swiper", s_lock: "lock", s_unlock: "unlock" }, host: { properties: { "class": "this.containerClasses" } }, queries: [{ propertyName: "slidesEl", predicate: SwiperSlideDirective }], viewQueries: [{ propertyName: "prevElRef", first: true, predicate: ["prevElRef"], descendants: true }, { propertyName: "nextElRef", first: true, predicate: ["nextElRef"], descendants: true }, { propertyName: "scrollbarElRef", first: true, predicate: ["scrollbarElRef"], descendants: true }, { propertyName: "paginationElRef", first: true, predicate: ["paginationElRef"], descendants: true }], usesOnChanges: true, ngImport: i0, template: "<ng-content select=\"[slot=container-start]\"></ng-content>\n<ng-container *ngIf=\"navigation && showNavigation\">\n  <div class=\"swiper-button-prev\" #prevElRef></div>\n  <div class=\"swiper-button-next\" #nextElRef></div>\n</ng-container>\n<div *ngIf=\"scrollbar && showScrollbar\" class=\"swiper-scrollbar\" #scrollbarElRef></div>\n<div *ngIf=\"pagination && showPagination\" class=\"swiper-pagination\" #paginationElRef></div>\n<div [ngClass]=\"wrapperClass\" [attr.id]=\"id\">\n  <ng-content select=\"[slot=wrapper-start]\"></ng-content>\n  <ng-template\n    *ngTemplateOutlet=\"\n      slidesTemplate;\n      context: {\n        loopSlides: prependSlides,\n        key: 'prepend'\n      }\n    \"\n  ></ng-template>\n  <ng-template\n    *ngTemplateOutlet=\"\n      slidesTemplate;\n      context: {\n        loopSlides: activeSlides,\n        key: ''\n      }\n    \"\n  ></ng-template>\n  <ng-template\n    *ngTemplateOutlet=\"\n      slidesTemplate;\n      context: {\n        loopSlides: appendSlides,\n        key: 'append'\n      }\n    \"\n  ></ng-template>\n  <ng-content select=\"[slot=wrapper-end]\"></ng-content>\n</div>\n<ng-content select=\"[slot=container-end]\"></ng-content>\n\n<ng-template #slidesTemplate let-loopSlides=\"loopSlides\" let-slideKey=\"key\">\n  <div\n    *ngFor=\"let slide of loopSlides | async\"\n    [ngClass]=\"\n      (slide.class ? slide.class + ' ' : '') +\n      slideClass +\n      (slideKey !== '' ? ' ' + slideDuplicateClass : '')\n    \"\n    [attr.data-swiper-slide-index]=\"slide.virtualIndex ? slide.virtualIndex : slide.slideIndex\"\n    [attr.data-swiper-autoplay]=\"slide.autoplayDelay\"\n    [style]=\"style\"\n    [ngSwitch]=\"slide.zoom\"\n  >\n    <div *ngSwitchCase=\"true\" [ngClass]=\"zoomContainerClass\">\n      <ng-template\n        [ngTemplateOutlet]=\"slide.template\"\n        [ngTemplateOutletContext]=\"{\n          $implicit: slide.slideData\n        }\"\n      ></ng-template>\n    </div>\n    <ng-container *ngSwitchDefault>\n      <ng-template\n        [ngTemplateOutlet]=\"slide.template\"\n        [ngTemplateOutletContext]=\"{\n          $implicit: slide.slideData\n        }\"\n      ></ng-template>\n    </ng-container>\n  </div>\n</ng-template>\n", styles: ["swiper{display:block}\n"], directives: [{ type: i1.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { type: i1.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet"] }, { type: i1.NgForOf, selector: "[ngFor][ngForOf]", inputs: ["ngForOf", "ngForTrackBy", "ngForTemplate"] }, { type: i1.NgSwitch, selector: "[ngSwitch]", inputs: ["ngSwitch"] }, { type: i1.NgSwitchCase, selector: "[ngSwitchCase]", inputs: ["ngSwitchCase"] }, { type: i1.NgSwitchDefault, selector: "[ngSwitchDefault]" }], pipes: { "async": i1.AsyncPipe }, changeDetection: i0.ChangeDetectionStrategy.OnPush, encapsulation: i0.ViewEncapsulation.None });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: SwiperComponent, decorators: [{
             type: Component,
-            args: [{
-                    selector: 'swiper, [swiper]',
-                    templateUrl: './swiper.component.html',
-                    changeDetection: ChangeDetectionStrategy.OnPush,
-                    encapsulation: ViewEncapsulation.None,
-                    styles: [
+            args: [{ selector: 'swiper, [swiper]', changeDetection: ChangeDetectionStrategy.OnPush, encapsulation: ViewEncapsulation.None, styles: [
                         `
       swiper {
         display: block;
       }
     `,
-                    ],
-                }]
+                    ], template: "<ng-content select=\"[slot=container-start]\"></ng-content>\n<ng-container *ngIf=\"navigation && showNavigation\">\n  <div class=\"swiper-button-prev\" #prevElRef></div>\n  <div class=\"swiper-button-next\" #nextElRef></div>\n</ng-container>\n<div *ngIf=\"scrollbar && showScrollbar\" class=\"swiper-scrollbar\" #scrollbarElRef></div>\n<div *ngIf=\"pagination && showPagination\" class=\"swiper-pagination\" #paginationElRef></div>\n<div [ngClass]=\"wrapperClass\" [attr.id]=\"id\">\n  <ng-content select=\"[slot=wrapper-start]\"></ng-content>\n  <ng-template\n    *ngTemplateOutlet=\"\n      slidesTemplate;\n      context: {\n        loopSlides: prependSlides,\n        key: 'prepend'\n      }\n    \"\n  ></ng-template>\n  <ng-template\n    *ngTemplateOutlet=\"\n      slidesTemplate;\n      context: {\n        loopSlides: activeSlides,\n        key: ''\n      }\n    \"\n  ></ng-template>\n  <ng-template\n    *ngTemplateOutlet=\"\n      slidesTemplate;\n      context: {\n        loopSlides: appendSlides,\n        key: 'append'\n      }\n    \"\n  ></ng-template>\n  <ng-content select=\"[slot=wrapper-end]\"></ng-content>\n</div>\n<ng-content select=\"[slot=container-end]\"></ng-content>\n\n<ng-template #slidesTemplate let-loopSlides=\"loopSlides\" let-slideKey=\"key\">\n  <div\n    *ngFor=\"let slide of loopSlides | async\"\n    [ngClass]=\"\n      (slide.class ? slide.class + ' ' : '') +\n      slideClass +\n      (slideKey !== '' ? ' ' + slideDuplicateClass : '')\n    \"\n    [attr.data-swiper-slide-index]=\"slide.virtualIndex ? slide.virtualIndex : slide.slideIndex\"\n    [attr.data-swiper-autoplay]=\"slide.autoplayDelay\"\n    [style]=\"style\"\n    [ngSwitch]=\"slide.zoom\"\n  >\n    <div *ngSwitchCase=\"true\" [ngClass]=\"zoomContainerClass\">\n      <ng-template\n        [ngTemplateOutlet]=\"slide.template\"\n        [ngTemplateOutletContext]=\"{\n          $implicit: slide.slideData\n        }\"\n      ></ng-template>\n    </div>\n    <ng-container *ngSwitchDefault>\n      <ng-template\n        [ngTemplateOutlet]=\"slide.template\"\n        [ngTemplateOutletContext]=\"{\n          $implicit: slide.slideData\n        }\"\n      ></ng-template>\n    </ng-container>\n  </div>\n</ng-template>\n" }]
         }], ctorParameters: function () { return [{ type: i0.NgZone }, { type: i0.ElementRef }, { type: i0.ChangeDetectorRef }, { type: Object, decorators: [{
                     type: Inject,
                     args: [PLATFORM_ID]
@@ -959,6 +843,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "12.2.2", ngImpor
             }], spaceBetween: [{
                 type: Input
             }], slidesPerView: [{
+                type: Input
+            }], maxBackfaceHiddenSlides: [{
                 type: Input
             }], grid: [{
                 type: Input
@@ -1132,8 +1018,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "12.2.2", ngImpor
                 type: Input
             }], virtual: [{
                 type: Input
-            }], index: [{
-                type: Input
             }], config: [{
                 type: Input
             }], s__beforeBreakpoint: [{
@@ -1163,6 +1047,12 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "12.2.2", ngImpor
             }], s_autoplayStop: [{
                 type: Output,
                 args: ['autoplayStop']
+            }], s_autoplayPause: [{
+                type: Output,
+                args: ['autoplayPause']
+            }], s_autoplayResume: [{
+                type: Output,
+                args: ['autoplayResume']
             }], s_beforeDestroy: [{
                 type: Output,
                 args: ['beforeDestroy']
@@ -1361,17 +1251,15 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "12.2.2", ngImpor
             }], s_zoomChange: [{
                 type: Output,
                 args: ['zoomChange']
+            }], s_swiper: [{
+                type: Output,
+                args: ['swiper']
             }], s_lock: [{
                 type: Output,
                 args: ['lock']
             }], s_unlock: [{
                 type: Output,
                 args: ['unlock']
-            }], s_swiper: [{
-                type: Output,
-                args: ['swiper']
-            }], indexChange: [{
-                type: Output
             }], prevElRef: [{
                 type: ViewChild,
                 args: ['prevElRef', { static: false }]
@@ -1394,10 +1282,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "12.2.2", ngImpor
 
 class SwiperModule {
 }
-SwiperModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "12.2.2", ngImport: i0, type: SwiperModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-SwiperModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "12.0.0", version: "12.2.2", ngImport: i0, type: SwiperModule, declarations: [SwiperComponent, SwiperSlideDirective], imports: [CommonModule], exports: [SwiperComponent, SwiperSlideDirective] });
-SwiperModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "12.2.2", ngImport: i0, type: SwiperModule, imports: [[CommonModule]] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "12.2.2", ngImport: i0, type: SwiperModule, decorators: [{
+SwiperModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: SwiperModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+SwiperModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: SwiperModule, declarations: [SwiperComponent, SwiperSlideDirective], imports: [CommonModule], exports: [SwiperComponent, SwiperSlideDirective] });
+SwiperModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: SwiperModule, imports: [[CommonModule]] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: SwiperModule, decorators: [{
             type: NgModule,
             args: [{
                     declarations: [SwiperComponent, SwiperSlideDirective],
@@ -1415,4 +1303,4 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "12.2.2", ngImpor
  */
 
 export { SwiperComponent, SwiperModule, SwiperSlideDirective };
-//# sourceMappingURL=swiper_angular.js.map
+//# sourceMappingURL=swiper_angular.mjs.map

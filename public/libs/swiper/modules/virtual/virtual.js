@@ -1,10 +1,11 @@
 import $ from '../../shared/dom.js';
 import { setCSSProperty } from '../../shared/utils.js';
-export default function Virtual({
-  swiper,
-  extendParams,
-  on
-}) {
+export default function Virtual(_ref) {
+  let {
+    swiper,
+    extendParams,
+    on
+  } = _ref;
   extendParams({
     virtual: {
       enabled: false,

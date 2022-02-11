@@ -41,13 +41,13 @@
     "postcss-scss": "^4.0.2",
     "postcss-sort-media-queries": "^4.1.0",
     "postcss-syntax": "^0.36.2",
+    "gulp-data": "^1.3.1",
     "sass": "^1.49.7"
   },
   "dependencies": {
-    "@fancyapps/ui": "^4.0.23",
-    "gulp-data": "^1.3.1",
+    "@fancyapps/ui": "^4.0.25",
     "inputmask": "^5.0.6",
     "jquery": "^3.6.0",
-    "swiper": "^7.4.1"
+    "swiper": "^8.0.5"
   }
 }
