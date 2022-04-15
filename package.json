@@ -17,7 +17,7 @@
     "browserslist": "^4.20.2",
     "browsersync-ssi": "^0.2.4",
     "colors": "^1.4.0",
-    "cssnano": "^5.1.4",
+    "cssnano": "^5.1.7",
     "del": "^6.0.0",
     "gulp": "^4.0.2",
     "gulp-babel": "^8.0.0",
@@ -42,12 +42,12 @@
     "postcss-scss": "^4.0.2",
     "postcss-sort-media-queries": "^4.1.0",
     "postcss-syntax": "^0.36.2",
-    "sass": "^1.49.9"
+    "sass": "^1.50.0"
   },
   "dependencies": {
     "@fancyapps/ui": "^4.0.26",
     "inputmask": "^5.0.6",
     "jquery": "^3.6.0",
-    "swiper": "^8.0.7"
+    "swiper": "^8.1.0"
   }
 }
